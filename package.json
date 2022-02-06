@@ -1,0 +1,26 @@
+{
+  "name": "api-rest",
+  "version": "1.0.0",
+  "description": "Proyecto de API RESTful con Node.js y Express para SD",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/solsolet/api-rest.git"
+  },
+  "keywords": [
+    "CRUD",
+    "REST",
+    "node",
+    "express",
+    "mongo"
+  ],
+  "author": "Gemma Sellés",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/solsolet/api-rest/issues"
+  },
+  "homepage": "https://github.com/solsolet/api-rest#readme"
+}
