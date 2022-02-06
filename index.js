@@ -14,7 +14,7 @@ server.listen(8080);
 console.log('Servidor ejecutándose en puerto 8080...');*/
 
 //node+express ver
-'use strict'
+/*'use strict'
 
 const express = require('express');
 const app = express();
@@ -25,4 +25,20 @@ app.get('/hola',(request,response) => {
 
 app.listen(8080,() => {
     console.log('API REST ejecutándose en http://localhost:8080/hola');
+});*/
+
+//ruta /hola/:unNombre
+'use strict'
+
+const port = process.env.PORT || 8888;
+
+const express = require('express');
+const app = express();
+
+app.get('/hola/:unNombre',(req,res) => {
+    res.status(200).send({ mensaje: `Hola ${req.params.unNombre} desde SD!`});
+});
+
+app.listen(port, () => {
+    console.log(`API REST ejecutándose en http://localhost:${port}/hola/:unNombre`);
 });
