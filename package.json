@@ -1,6 +1,6 @@
 {
   "name": "api-rest",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Proyecto de API RESTful con Node.js y Express para SD",
   "main": "index.js",
   "scripts": {

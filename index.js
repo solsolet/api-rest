@@ -1,37 +1,7 @@
-//1a ver
-/*var http = require('http');
-var server = http.createServer();
-
-function HTTP_Response (request,response) {
-    response.writeHead(200,{'Content-Type': 'text/plain'});
-    response.write('Hola a todas y a todos!\n');
-    response.end();
-}
-
-server.on('request',HTTP_Response);
-server.listen(8080);
-
-console.log('Servidor ejecutándose en puerto 8080...');*/
-
-//node+express ver
-/*'use strict'
-
-const express = require('express');
-const app = express();
-
-app.get('/hola',(request,response) => {
-    response.send('Hola a todas y a todos desde Express!')
-});
-
-app.listen(8080,() => {
-    console.log('API REST ejecutándose en http://localhost:8080/hola');
-});*/
-
-//ruta /hola/:unNombre
+//Primer API REST tipo CRUD
 'use strict'
 
 const port = process.env.PORT || 3000;
-
 const express = require('express');
 const logger = require('morgan');
 
@@ -39,12 +9,63 @@ const app = express();
 
 //Declarem els middleware
 app.use(logger('dev')); //probar amb: tiny, short, dev, common, combined
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
 
-//Declarem el API
-app.get('/hola/:name',(req,res) => {
-    res.status(200).send({ mensaje: `¡Hola ${req.params.name} desde SD con JSON!`});
+//declarem nostres rutes i definim nostres controladors i log de negoci
+app.get('/api/product', getProductController);
+
+function getProductController(req,res) {
+    res.status(200).send({
+        msg: "ahí están todos los productos",
+        productos: []
+    })
+}
+//recuperem un producte (amb funció embebida)
+app.get('/api/product/:productID', (req,res) => {
+    const id = req.params.productID;
+
+    res.status(200).send({
+        msg: `ahí va el producto ${id} solicitado`,
+        productID: id
+    })
+});
+
+app.post('/api/product', (req,res) => {
+    const miProducto = req.body;
+    console.log(miProducto);
+
+    //aqui vendría mi logica de negocio
+
+    res.status(200).send({
+        msg: "he creado un producto",
+        producto: miProducto
+    })
+});
+
+app.put('/api/product/:productID', (req,res) => {
+    const id = req.params.productID;
+    const newProduct = req.body;
+
+    //mi log de negocio
+
+    res.status(200).send({
+        msg: "he actualizado tu registro",
+        newProduct: newProduct //realment es el q m'han manat
+    })
+});
+
+app.delete('/api/product/:productID', (req,res) => {
+    const id = req.params.productID;
+
+    //mi log d negoci
+
+    res.status(200).send({
+        msg: "he eliminado el producto indicado",
+        producto: id
+    })
 });
 
 app.listen(port, () => {
-    console.log(`API REST ejecutándose en http://localhost:${port}/hola/:unNombre`);
+    console.log(`API REST CRUD ejecutándose en http://localhost:${port}/api/product`);
 });
