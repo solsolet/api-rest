@@ -30,13 +30,19 @@ app.listen(8080,() => {
 //ruta /hola/:unNombre
 'use strict'
 
-const port = process.env.PORT || 8888;
+const port = process.env.PORT || 3000;
 
 const express = require('express');
+const logger = require('morgan');
+
 const app = express();
 
-app.get('/hola/:unNombre',(req,res) => {
-    res.status(200).send({ mensaje: `Hola ${req.params.unNombre} desde SD!`});
+//Declarem els middleware
+app.use(logger('dev')); //probar amb: tiny, short, dev, common, combined
+
+//Declarem el API
+app.get('/hola/:name',(req,res) => {
+    res.status(200).send({ mensaje: `¡Hola ${req.params.name} desde SD con JSON!`});
 });
 
 app.listen(port, () => {
