@@ -6,16 +6,41 @@ const port = process.env.PORT || 3000;
 const express = require('express');
 const logger = require('morgan');
 const mongojs = require('mongojs');
+//const cors = require('cors');
 
 const app = express();
 
 var db = mongojs("SD"); //es pot incloure + parametres: username:password@example.com/SD
-var id = mongojs.ObjectId;
+var id = mongojs.ObjectID;
 
 //Declarem els middleware
+var allowMethods = (req,res,next) => {
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    return next();
+};
+var allowCrossTokenHeader = (req,res,next) => {
+    res.header("Access-Control-Allow-Headers", "token");
+    return next();
+};
+/*var allowCrossTokenOrigin = (req,res,next) => {
+    res.header("Acces-Control-Allow-Origin", "*");
+    return next();
+};*/
+var auth = (req,res,next) => {
+    if(req.headers.token === "password1234"){
+        return next();
+    } else {
+        return next(new Error("No autorizado"));
+    };
+};
+
 app.use(logger('dev')); //probar amb: tiny, short, dev, common, combined
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+//app.use(cors());
+app.use(allowMethods);
+app.use(allowCrossTokenHeader);
+//app.use(allowCrossTokenOrigin);
 
 //trigger previ a les rutes x donar suport a múltiples coleccions
 app.param("coleccion", (req,res,next,coleccion) => {
@@ -52,7 +77,7 @@ app.get('/api/:coleccion/:id', (req,res,next) => {
     });
 });
 
-app.post('/api/:coleccion', (req,res,next) => {
+app.post('/api/:coleccion', auth, (req,res,next) => {
     const elemento = req.body;
 
     if(!elemento.nombre){
@@ -63,12 +88,12 @@ app.post('/api/:coleccion', (req,res,next) => {
     } else {
         req.collection.save(elemento, (err, coleccionGuardada) => {
             if(err) return next(err);
-            res.json(coleccionGuardada);
+                res.json(coleccionGuardada);
         });
     }
 });
 
-app.put('/api/:coleccion/:id', (req,res,next) => {
+app.put('/api/:coleccion/:id', auth, (req,res,next) => {
     let elementoId = req.params.id;
     let elementoNuevo = req.body;
     req.collection.update({_id: id(elementoId)},
@@ -78,7 +103,7 @@ app.put('/api/:coleccion/:id', (req,res,next) => {
     });
 });
 
-app.delete('/api/:coleccion/:id', (req,res,next) => {
+app.delete('/api/:coleccion/:id', auth, (req,res,next) => {
     let elementoId = req.params.id;
 
     req.collection.remove({_id: id(elementoId)}, (err,resultado) => {
