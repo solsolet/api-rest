@@ -1,7 +1,15 @@
-//PWS CRUD mediante APIRestful y Mongo
+//Servei HTTPS
 'use strict'
 
 const port = process.env.PORT || 3000;
+
+const https = require('https');//obliga a express a treballar en esta libreria
+const fs = require('fs');//que puga accedir al file system
+
+const OPTIONS_HTTPS = { //declarar clau privada i certificat
+    key: fs.readFileSync('./cer/key.pen'),
+    cert: fs.readFileSync('./cer/cert.pen')
+};
 
 const express = require('express');
 const logger = require('morgan');
@@ -112,7 +120,12 @@ app.delete('/api/:coleccion/:id', auth, (req,res,next) => {
     });
 });
 
-//iniciem l'aplicació
-app.listen(port, () => {
-    console.log(`API REST ejecutándose en http://localhost:${port}/api/:coleccion/:id`);
+//creem server https que inicia l'app
+https.createServer(OPTIONS_HTTPS, app).listen(port, () => {
+    console.log(`SCR WS API REST CRUD ejecutándose en https://localhost:${port}/api/:coleccion/:id`);
 });
+
+//iniciem l'aplicació
+//app.listen(port, () => {
+    //console.log(`API REST ejecutándose en http://localhost:${port}/api/:coleccion/:id`);
+//});
