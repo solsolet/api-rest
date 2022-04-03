@@ -14,7 +14,7 @@ const OPTIONS_HTTPS = { //declarar clau privada i certificat
 const express = require('express');
 const logger = require('morgan');
 const mongojs = require('mongojs');
-//const cors = require('cors');
+const cors = require('cors');
 
 const app = express();
 
@@ -27,13 +27,13 @@ var allowMethods = (req,res,next) => {
     return next();
 };
 var allowCrossTokenHeader = (req,res,next) => {
-    res.header("Access-Control-Allow-Headers", "token");
+    res.header("Access-Control-Allow-Headers", "*");
     return next();
 };
-/*var allowCrossTokenOrigin = (req,res,next) => {
+var allowCrossTokenOrigin = (req,res,next) => {
     res.header("Acces-Control-Allow-Origin", "*");
     return next();
-};*/
+};
 var auth = (req,res,next) => {
     if(req.headers.token === "password1234"){
         return next();
@@ -45,10 +45,10 @@ var auth = (req,res,next) => {
 app.use(logger('dev')); //probar amb: tiny, short, dev, common, combined
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-//app.use(cors());
+app.use(cors());
 app.use(allowMethods);
 app.use(allowCrossTokenHeader);
-//app.use(allowCrossTokenOrigin);
+app.use(allowCrossTokenOrigin);
 
 //trigger previ a les rutes x donar suport a múltiples coleccions
 app.param("coleccion", (req,res,next,coleccion) => {
