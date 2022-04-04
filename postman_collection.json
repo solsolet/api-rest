@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "865c4bfa-8172-44f7-9113-e0b1845359cd",
-		"name": "SD",
+		"name": "api-rest",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -179,7 +179,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/:coleccion/",
+					"name": "/api/{coleccion}/",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -199,7 +199,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/:coleccion/:id/",
+					"name": "/api/{coleccion}/{id}/",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -220,7 +220,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/:coleccion/",
+					"name": "/api/{coleccion}/",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -249,7 +249,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/:coleccion/:id/",
+					"name": "/api/{coleccion}/{id}/",
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -279,7 +279,7 @@
 					"response": []
 				},
 				{
-					"name": "/api/:coleccion/:id/",
+					"name": "/api/{coleccion}/{id}/",
 					"request": {
 						"method": "DELETE",
 						"header": [
